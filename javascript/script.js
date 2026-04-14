@@ -17,6 +17,7 @@ function init() {
 
 // 2. VIEW MANAGEMENT
 function showView(viewId) {
+    // Hide all other views
     const views = ['home', 'browse', 'singleproduct', 'cart'];
     views.forEach(v => document.getElementById(v).classList.add('hidden'));
     document.getElementById(viewId).classList.remove('hidden');
@@ -25,6 +26,7 @@ function showView(viewId) {
 
 // 3. FILTER GENERATION
 function renderFilterButtons() {
+    // Generate filter buttons
     const cats = [...new Set(products.map(p => p.category))];
     const gens = [...new Set(products.map(p => p.gender))];
     const sizes = [...new Set(products.map(p => p.sizes).flat())];
@@ -41,12 +43,15 @@ function renderFilterButtons() {
         });
     };
 
+    // Render filter buttons
     setupSection(cats, 'category-filters', 'category');
     setupSection(gens, 'gender-filters', 'gender');
     setupSection(sizes, 'size-filters', 'size');
 }
 
+
 function toggleFilter(type, value, btn) {
+    // Toggle filter button state and apply filters and sort
     const index = selectedFilters[type].indexOf(value);
     if (index > -1) {
         selectedFilters[type].splice(index, 1);
@@ -61,6 +66,7 @@ function toggleFilter(type, value, btn) {
 }
 
 function clearAllFilters() {
+    // Clear all filters and apply filters and sort 
     selectedFilters = { category: [], gender: [], size: [] };
     const filterButtons = document.querySelectorAll('#category-filters button, #gender-filters button, #size-filters button');
     filterButtons.forEach(btn => {
@@ -71,6 +77,7 @@ function clearAllFilters() {
 }
 
 function applyFiltersAndSort() {
+    // Apply filters and sort 
     let filtered = products.filter(p => {
         const matchCat = selectedFilters.category.length === 0 || selectedFilters.category.includes(p.category);
         const matchGen = selectedFilters.gender.length === 0 || selectedFilters.gender.includes(p.gender);
@@ -88,6 +95,7 @@ function applyFiltersAndSort() {
 
 // 4. BROWSE
 function displayProducts(list) {
+    // Display products 
     const container = document.getElementById('productList');
     const noMatch = document.getElementById('no-matches');
     container.innerHTML = '';
@@ -288,12 +296,14 @@ function openCart() {
     showView('cart');
 }
 
+// 6. CART FUNCTIONS - REMOVE
 function removeFromCart(index) {
     cart.splice(index, 1);
     updateCartCount();
     openCart();
 }
 
+// 6. CART FUNCTIONS - CHECKOUT
 function checkout() {
     alert("TRANSACTION FINALIZED - ORDER DISPATCHED");
     cart = []; updateCartCount(); showView('home');
