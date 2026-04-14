@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBAN VOID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="javascript/script.js"></script>
+
+    <!-- CUSTOM STYLES -->
+    <style>
+      
+        .street-card { clip-path: polygon(0 0, 100% 0, 100% 90%, 92% 100%, 0 100%); }
+        .street-btn { transform: skew(-15deg); transition: all 0.2s; }
+        .street-btn span { transform: skew(15deg); display: inline-block; }
+        
+        .red-glitch { text-shadow: 2px 0 #FF0000, -2px 0 #FFFFFF; }
+
+        .filter-active { 
+            background-color: #000000 !important; 
+            color: #FFFFFF !important; 
+            border-color: #FF0000 !important;
+            transform: scale(1.05); 
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #FF0000; }
+    </style>
+</head>
+
+<body class="bg-black text-white font-sans selection:bg-[#FF0000] selection:text-white">
+
+  <!-- HEADER / NAV BAR -->
+<header class="bg-black border-b-8 border-[#FF0000] p-6 sticky top-0 z-50 flex justify-between items-center">
+    <h1 class="text-5xl font-black italic tracking-tighter uppercase red-glitch">URBAN<span class="text-white">VOID</span></h1>
+    <nav class="flex items-center space-x-8 font-bold uppercase text-xs tracking-[0.2em]">
+        <button onclick="showView('home')" class="hover:text-[#FF0000] transition">HOME</button>
+        <button onclick="openBrowse()" class="hover:text-[#FF0000] transition">BROWSE</button>
+        <button onclick="showAbout()" class="hover:text-[#FF0000] transition">ABOUT</button>
+        <button onclick="openCart()" class="relative bg-white text-black px-6 py-2 street-btn hover:bg-[#FF0000] hover:text-white transition">
+            <span class="font-black">CART [<span id="cartCount">0</span>]</span>
+        </button>
+    </nav>
+</header>
+
+<main>
+    <article id="home" class="view-section min-h-screen">
+        <div class="relative h-[70vh] bg-zinc-900 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center opacity-70 grayscale contrast-125" style="background-image: url('https://images.unsplash.com/photo-1635650804483-2a77a8c9e728?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+            <!-- <cite> Woman holding her white shirt flipping hair photo – free woman image on unsplash. (n.d.). Unsplash. Retrieved October 6, 2023 </cite> -->
+            <div class="relative z-10 p-12 h-full flex flex-col justify-end items-start bg-gradient-to-t from-black via-black/20 to-transparent">
+                <h2 class="text-9xl font-black uppercase leading-[0.8] mb-6 italic tracking-tighter">RED<br><span class="text-[#FF0000]">SHIFT</span></h2>
+                <button onclick="openBrowse()" class="bg-[#FF0000] text-white px-12 py-5 font-black uppercase text-2xl street-btn hover:bg-white hover:text-black transition"><span>Access Collection</span></button>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+            <div class="h-80 bg-zinc-900 p-10 street-card border-l-[12px] border-[#FF0000] flex flex-col justify-end group cursor-pointer overflow-hidden relative">
+                <div class="absolute top-4 right-4 text-6xl font-black text-white/5 uppercase">01</div>
+                <h3 class="text-5xl font-black uppercase italic relative z-10">Apparel</h3>
+            </div>
+            <div class="h-80 bg-[#FF0000] p-10 street-card border-l-[12px] border-white flex flex-col justify-end group cursor-pointer relative">
+                 <div class="absolute top-4 right-4 text-6xl font-black text-black/10 uppercase">02</div>
+                <h3 class="text-5xl font-black uppercase italic text-black">Accessories</h3>
+            </div>
+        </div>
+    </article>
+
+    <article id="browse" class="view-section hidden min-h-screen bg-white">
+      <div class="max-w-7xl mx-auto p-8 flex flex-col md:flex-row gap-12 text-black">
+            <aside class="w-full md:w-72 space-y-10">
+                <div class="border-b-8 border-black pb-4">
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter">Filters</h2>
+                    <button onclick="clearAllFilters()" class="mt-4 w-full bg-black text-white py-2 text-[10px] font-black uppercase street-btn hover:bg-[#FF0000] transition">
+                        <span>Clear All Filters [ X ]</span>
+                    </button>
+                </div>
+                
+                <section id="filter-container" class="space-y-8">
+                    <div>
+                        <h3 class="font-black uppercase text-xs mb-4 tracking-[0.2em] text-[#FF0000]">Department</h3>
+                        <div id="gender-filters" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-black uppercase text-xs mb-4 tracking-[0.2em] text-[#FF0000]">Category</h3>
+                        <div id="category-filters" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-black uppercase text-xs mb-4 tracking-[0.2em] text-[#FF0000]">Size</h3>
+                        <div id="size-filters" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </section>
+                
+                <div class="pt-8 border-t-2 border-zinc-100">
+                    <h3 class="font-black uppercase text-xs mb-4 tracking-[0.2em] text-zinc-400">Sort Results</h3>
+                    <select id="sortSelect" onchange="applyFiltersAndSort()" class="w-full bg-white border-4 border-black p-3 font-black uppercase text-xs focus:ring-4 focus:ring-[#FF0000] outline-none cursor-pointer">
+                        <option value="name-asc">Product Name (A-Z)</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                    </select>
+                </div>
+            </aside>
+
+            <section id="results" class="flex-1">
+                <div id="productList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </div>
+
+                <div id="no-matches" class="hidden text-center py-40">
+                    <p class="text-2xl font-black uppercase italic text-zinc-400 mt-[-2rem]">No matches found for current search.</p>
+                    <button onclick="clearAllFilters()" class="mt-6 text-[#FF0000] font-black uppercase underline hover:text-black">Reset Filters</button>
+                </div>
+            </section>
+        </div>
+    </article>
+
+    <article id="singleproduct" class="view-section hidden p-12 max-w-7xl mx-auto"></article>
+
+    <article id="cart" class="view-section hidden p-12 max-w-6xl mx-auto">
+        <h2 class="text-7xl font-black uppercase italic mb-12 border-b-[16px] border-[#FF0000] inline-block">Cart</h2>
+        <div id="cartGrid" class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div id="cartItems" class="lg:col-span-2 space-y-6"></div>
+            <aside class="space-y-8">
+                <div class="bg-zinc-900 p-8 street-card border-l-8 border-[#FF0000]">
+                    <h3 class="font-black uppercase mb-6 text-xl italic text-[#FF0000]">YOUR CART</h3>
+                    <div class="space-y-4">
+                        <select id="shippingType" onchange="openCart()" class="w-full bg-black border-2 border-zinc-700 p-3 text-xs font-black uppercase text-white focus:border-[#FF0000]">
+                            <option value="standard">Standard Delivery</option>
+                            <option value="express">Express Delivery</option>
+                            <option value="priority">Priority Override</option>
+                        </select>
+                        <select id="destination" onchange="openCart()" class="w-full bg-black border-2 border-zinc-700 p-3 text-xs font-black uppercase text-white focus:border-[#FF0000]">
+                            <option value="CA">Canada [Tax Applied]</option>
+                            <option value="US">United States</option>
+                            <option value="INT">International</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="cartSummary" class="bg-white p-8 street-card border-l-8 border-black text-black"></div>
+            </aside>
+        </div>
+    </article>
+</main>
+
+<dialog id="about" class="bg-black text-white p-12 border-8 border-[#FF0000] max-w-lg backdrop:bg-black/95">
+    <h2 class="text-5xl font-black uppercase mb-6 italic tracking-tighter">Assignment 2 <br>(HTML, CSS, JS Vanilla, JSON)</h2>
+    <div class="space-y-6 text-sm font-bold uppercase tracking-widest leading-loose">
+
+        <p class="text-[#FF0000]">Lihini Herath</p>
+    </div>
+    <button class="mt-10 w-full bg-white text-black font-black py-4 uppercase street-btn hover:bg-[#FF0000] hover:text-white transition" onclick="closeAbout()"><span>CLOSE</span></button>
+</dialog>
+
+<div id="cartNotification" class="fixed top-32 right-0 bg-[#FF0000] text-white px-10 py-5 font-black uppercase italic transition-all duration-300 translate-x-full z-[100] street-card">
+    <p>Added to Cart</p>
+</div>
+
+<footer class="bg-black p-20 border-t-8 border-zinc-900 text-center">
+    <p class="text-zinc-600 uppercase tracking-[0.5em] text-[10px] font-black"> Urban Void 2026 </p>
+    <p class="text-zinc-600 uppercase tracking-[0.5em] text-[10px] font-black" href=url(https://github.com/lhera155/COMP3512_Assignment_2.git)>GitHub Link</href> </p>
+</footer>
+
+</body>
+</html>
